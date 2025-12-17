@@ -6,26 +6,28 @@ In this project, I will focus on the violent crime rate in New York State. The m
 
 ## Repository Structure
 
+```text
 Final_Project/
 
 - data/
-  - data.py # Load and merge raw data
-  - final_df.parquet # Final processed data
+  - data.py                  # Load and merge raw data
+  - final_df.parquet         # Final processed data
 - eda_plot/
-  - plotting.py # Plotting function for EDA
+  - plotting.py              # Plotting function for EDA
 - model_analysis/
-  - model_traning.py # THE MAIN FILE for Modelling and Evaluation
+  - model_training.py        # THE MAIN FILE for Modelling and Evaluation
 - src/
   - evaluation_prediction.py # Function for evaluating the GLM & LGBM model
-  - feature_engineering.py # Log transformers
+  - feature_engineering.py   # Log transformers
 - test/
-  - test_log.py # Unit tests for log transformers
-- .gitignore # Ignore file configuration
-- eda_cleaning.ipynb # Exploratory data analysis + Data cleaning
-- .pre-commit-config.yaml # Pre-commit hooks
-- environment.yml # Conda environment
-- pyproject.toml # Project configuration
+  - test_log.py              # Unit tests for log transformers
+- .gitignore                 # Ignore file configuration
+- .pre-commit-config.yaml    # Pre-commit hooks
+- eda_cleaning.ipynb         # Exploratory data analysis + Data cleaning
+- environment.yml            # Conda environment
+- pyproject.toml             # Project configuration
 - README.md
+```
 
 ## Installation
 
@@ -52,7 +54,7 @@ Final_Project/
 
 ## Data Preparation:
 
-- Run the Jupyter notebook (`eda_cleaning.ipynb’) to perform EDA analysis and generate the parguet file
+- Run the Jupyter notebook (`eda_cleaning.ipynb’) to perform EDA analysis and generate the parquet file
 
 ## Unit Test
 
