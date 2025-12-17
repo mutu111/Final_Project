@@ -23,10 +23,10 @@ Final_Project/
   - test_log.py              # Unit tests for log transformers
 - .gitignore                 # Ignore file configuration
 - .pre-commit-config.yaml    # Pre-commit hooks
+- README.md
 - eda_cleaning.ipynb         # Exploratory data analysis + Data cleaning
 - environment.yml            # Conda environment
 - pyproject.toml             # Project configuration
-- README.md
 ```
 
 ## Installation
@@ -54,8 +54,8 @@ Final_Project/
 
 ## Data Preparation:
 
-- Run the Jupyter notebook (`eda_cleaning.ipynb’) to perform EDA analysis and generate the parquet file
+- Run the Jupyter notebook ('eda_cleaning.ipynb') to perform EDA analysis and generate the parquet file
 
 ## Unit Test
 
-- Run "pytest" in the terminal for log transformer test
+- Run "pytest" in the terminal for log transformer test ('test_log.py')
