@@ -14,29 +14,9 @@ def evaluate_predictions(
     exposure_column=None,
 ):
     """
-    Evaluate predictions against actual outcomes.
-
-    Parameters
-    ----------
-    df : pd.Dataframe
-        Dataframe used for evaluation
-    outcome_column : str
-        Name of outcome column
-    preds_column : str, optional
-        Name of predictions column, by default None
-    model :
-        Fitted model, by default None
-    tweedie_power : float, optional
-        Power of tweedie distribution for deviance computation, by default 1.5
-    exposure_column : str, optional
-        Name of exposure column, by default None
-
-    Returns
-    -------
-    metrics = {}
-        DataFrame containing metrics
+    Evaluate model predictions using regression and metrics.
+    Computes bias, RMSE, MAE, deviance, and Gini coefficient for model performance.
     """
-
     metrics = {}
 
     assert (
@@ -71,7 +51,9 @@ def evaluate_predictions(
 
 
 def lorenz_curve(y_true, y_pred, exposure):
-
+    """
+    Compute the Lorenz curve based on predicted risk ranking.
+    """
     y_true = np.asarray(y_true)
     y_pred = np.asarray(y_pred)
     exposure = np.asarray(exposure)
