@@ -2,7 +2,7 @@
 
 ## Background
 
-In this project, I will specifically focus on the violent crime rate in New York State.The main research question is: Which types of factors (population, unemployment, urbanization, traffic count...) are most influential and important in determining violent crime rates in New York State? I will use Generalized Linear Model and Light Gradient Boosting Machine Model to conduct prediction.
+In this project, I will focus on the violent crime rate in New York State. The main research question is: Which types of features (population, unemployment, urbanization, traffic count...) are most influential and important in determining violent crime rates in New York State? I will use Generalized Linear Model and Light Gradient Boosting Machine Model to conduct the violent crime rate prediction.
 
 ## Repository Structure
 
@@ -30,20 +30,25 @@ Final_Project/
 ## Installation
 
 1. Open the file
-   Method 1: Extract the zip file "d100*d400_code*{1728H}.zip"
-   Method 2: Clone the repository "git clone <repo-url>"
+
+- Method 1: Extract the zip file "d100*d400_code*{1728H}.zip"
+- Method 2: Clone the repository "git clone <repo-url>"
 
 2. Create conda environment
-   conda env create -f environment.yml
+
+- conda env create -f environment.yml
 
 3. Activate the environment
-   conda activate final_project
+
+- conda activate final_project
 
 4. Install project as package
-   pip install .
+
+- pip install .
 
 5. Run the file: Model Training & Evaluation
-   python -m model_analysis.model_training
+
+- python -m model_analysis.model_training
 
 ## Data Preparation:
 
