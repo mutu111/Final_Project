@@ -14,8 +14,8 @@ from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from evaluation.evaluation_predictions import evaluate_predictions
-from feature_engineering.transformer import LogTransformer
+from src.evaluation_predictions import evaluate_predictions
+from src.feature_engineering import LogTransformer
 
 # %%
 
@@ -24,8 +24,9 @@ from feature_engineering.transformer import LogTransformer
 ## ---------------------------------------------------------
 
 ## (a) Load and split cleaned data
-
-df = pd.read_parquet("data/final_df.parquet")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DATA_PATH = PROJECT_ROOT / "data" / "final_df.parquet"
+df = pd.read_parquet(DATA_PATH)
 
 df_train = df[df["year"] <= 2015].copy()
 df_test = df[df["year"] > 2015].copy()
@@ -147,7 +148,6 @@ glm_mse = mean_squared_error(y_test, glm_test_pred)
 glm_rmse = np.sqrt(glm_mse)
 
 print("GLM Test RMSE:", glm_rmse)
-
 # %%
 
 lgbm_param_grid = {
@@ -201,31 +201,32 @@ lgbm_eval = evaluate_predictions(
     exposure_column=None,
 )
 
-print(glm_eval)
-print(lgbm_eval)
+print("GLM Evaluation Metrics", glm_eval)
+print("LGBM Evaluation Metrics", lgbm_eval)
 
 # %%
 
 ## ---------------------------------------------------------
 # Predicted vs. actual plot
-def plot_pred_vs_actual(y_true, y_pred, title):
+def plot(y_true, y_pred, title, ax):
     """
     Plot a scatter plot (actual vs predicted value)
     """
-    plt.figure(figsize=(6, 6))
-    plt.scatter(y_true, y_pred, alpha=0.4)
+    ax.scatter(y_true, y_pred, alpha=0.4)
     min_v = min(y_true.min(), y_pred.min())
     max_v = max(y_true.max(), y_pred.max())
-    plt.plot([min_v, max_v], [min_v, max_v], "r--")
-    plt.xlabel("Actual Violent Rate")
-    plt.ylabel("Predicted Violent Rate")
-    plt.title(title)
-    plt.tight_layout()
-    plt.show()
+    ax.plot([min_v, max_v], [min_v, max_v], "r--")
+    ax.set_xlabel("Actual Violent Crime Rate")
+    ax.set_ylabel("Predicted Violent Crime Rate")
+    ax.set_title(title)
 
 
-plot_pred_vs_actual(y_test, df_test["GLM_pred"], "GLM: Predicted vs Actual")
-plot_pred_vs_actual(y_test, df_test["LGBM_pred"], "LGBM: Predicted vs Actual")
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+plot(y_test, df_test["GLM_pred"], "GLM: Predicted vs Actual", axes[0])
+plot(y_test, df_test["LGBM_pred"], "LGBM: Predicted vs Actual", axes[1])
+
+plt.tight_layout()
+plt.show()
 
 # %%
 
@@ -261,7 +262,9 @@ glm_importance = pd.DataFrame(
     {"feature": feature_names, "coefficient": glm_coefs}
 ).sort_values(by="coefficient", key=lambda s: s.abs(), ascending=False)
 
+print("GLM importance value")
 print(glm_importance.head(10))
+
 
 lgbm_importance = pd.DataFrame(
     {
@@ -270,24 +273,45 @@ lgbm_importance = pd.DataFrame(
     }
 ).sort_values(by="importance", ascending=False)
 
+print("LGBM importance value")
 print(lgbm_importance.head(10))
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+# GLM Importance Plot
+glm_top = glm_importance.head(8)
+axes[0].barh(glm_top["feature"], glm_top["coefficient"].abs())
+axes[0].invert_yaxis()
+axes[0].set_title("GLM Feature Importance")
+axes[0].set_xlabel("|Coefficient|")
+
+# LGBM Importance Plot
+lgbm_top = lgbm_importance.head(8)
+axes[1].barh(lgbm_top["feature"], lgbm_top["importance"])
+axes[1].invert_yaxis()
+axes[1].set_title("LightGBM Feature Importance")
+axes[1].set_xlabel("Importance")
+
+plt.tight_layout()
+plt.show()
 
 
 # %%
 
 ## ---------------------------------------------------------
 # Partial dependence plots
-top5 = lgbm_importance["feature"].head(5).tolist()
+top4 = lgbm_importance["feature"].head(4).tolist()
 
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+axes = axes.ravel()
 
-for feat in top5:
-    fig = plt.figure(figsize=(6, 4))
+for i, feat in enumerate(top4):
     PartialDependenceDisplay.from_estimator(
-        lgbm_best, X_train, [feat], ax=plt.gca(), kind="average"
+        lgbm_best, X_train, [feat], ax=axes[i], kind="average"
     )
-    plt.title(f"PDP for {feat}")
-    plt.tight_layout()
-    plt.show()
+    axes[i].set_title(f"PDP for {feat}")
 
+plt.tight_layout()
+plt.show()
 
 # %%

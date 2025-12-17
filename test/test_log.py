@@ -7,7 +7,7 @@ sys.path.append(str(root))
 import numpy as np
 import pandas as pd
 
-from feature_engineering.transformer import LogTransformer
+from src.feature_engineering import LogTransformer
 
 
 def test_log():
