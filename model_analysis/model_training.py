@@ -300,12 +300,12 @@ plt.show()
 
 ## ---------------------------------------------------------
 # Partial dependence plots
-top4 = lgbm_importance["feature"].head(4).tolist()
+top5 = lgbm_importance["feature"].head(5).tolist()
 
-fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+fig, axes = plt.subplots(3, 2, figsize=(12, 8))
 axes = axes.ravel()
 
-for i, feat in enumerate(top4):
+for i, feat in enumerate(top5):
     PartialDependenceDisplay.from_estimator(
         lgbm_best, X_train, [feat], ax=axes[i], kind="average"
     )
